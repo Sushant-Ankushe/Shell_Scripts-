@@ -1,5 +1,14 @@
 # Shell_Scripts-
 This is the repository where I will create day today useful shell scripts.
+===============================CPU Load (CPU_health.sh)============
+The script is designed to warn about CPU heath if it is busy or healthy.
+components used- load average and number of cores
+In this script I am calculating the load per core (l/c) and checking if it is greater than on less than 0.7
+I am considering 0.7 load per core as a healthy machine. 
+If the load is > 0.7 then cpu will print a message like 
+Welcome to System Health Check
+System has 4 cores
+CPU is busy load:5.66 on cores:4
 =============================disk_alert.sh==============
 Checks disk usage for all mounted filesystems.
 Prints a WARNING for any filesystem above 80% usage and a CRITICAL for any above 90%.
