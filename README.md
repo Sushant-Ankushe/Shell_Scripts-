@@ -1,28 +1,32 @@
 # Shell_Scripts-
-This is the repository where I will create day today useful shell scripts.
-===============================CPU Load (CPU_health.sh)==================================
-The script is designed to warn about CPU heath if it is busy or healthy.
-components used- load average and number of cores
-In this script I am calculating the load per core (l/c) and checking if it is greater than on less than 0.7
-I am considering 0.7 load per core as a healthy machine. 
-If the load is > 0.7 then cpu will print a message like 
-Welcome to System Health Check
-System has 4 cores
-CPU is busy load:5.66 on cores:4
-=============================disk_alert.sh====================================================
+This is the repository where I will create day today useful shell scripts.  
+
+===============================CPU Load (CPU_health.sh)====================================  
+The script is designed to warn about CPU heath if it is busy or healthy.  
+components used- load average and number of cores  
+In this script I am calculating the load per core (l/c) and checking if it is greater than on less than 0.7  
+I am considering 0.7 load per core as a healthy machine.   
+If the load is > 0.7 then cpu will print a message like   
+Welcome to System Health Check  
+System has 4 cores  
+CPU is busy load:5.66 on cores:4  
+
+=============================disk_alert.sh==================================================  
+
 Checks disk usage for all mounted filesystems.
 Prints a WARNING for any filesystem above 80% usage and a CRITICAL for any above 90%.
 Writes the alerts with a timestamp to /tmp/disk_alert.log (the real-world version would email or post to Slack).
 Exits with code 0 if everything is fine, 1 if there's a warning, and 2 if there's a critical alert.
 
-=============================log_cleanup.sh======================================================
+=============================log_cleanup.sh=================================================  
 Takes the log directory as the first argument (default /var/log/myapp) and a retention period in days as the second (default 7).
 Exits with an error message if the directory doesn't exist.
 Compresses (gzip) any .log file older than 1 day that isn't already compressed.
 Deletes any .log.gz file older than the retention period.
 Prints a summary at the end: number of files compressed, number deleted, and total disk space freed (approximate is fine).
 Logs each action with a timestamp to /tmp/log_cleanup.log.
-================================service_watchdog.sh=============
+
+================================service_watchdog.sh========================================    
 Accepts a list of service names as arguments (default: nginx docker cron).
 For each service, checks whether it is active (use systemctl is-active).
 If a service is down, attempts to restart it once, waits a few seconds, and re-checks.
