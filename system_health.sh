@@ -3,29 +3,48 @@
 set -euo pipefail
 #===================CPU Health CHeck ==============
 core=$(nproc)
-echo "===================================================================="
-echo "System has ${core} cores"
+cpu="0"
+disk="0"
+root="0"
 load=$(awk '{print $1}' /proc/loadavg)
 if awk -v l="$load" -v c="$core" 'BEGIN { exit !(l/c > 0.7)}';then
-	echo "CPU is busy load:${load} on cores:${core}"
+	cpu="[Not OK]"
 else
-	echo "CPU is Healthy"
+	cpu="[Ok]"
 fi
 #====================Memory Health================
-echo "===================================================================="
 totalspace=$(free | tail -n +2 | head -1 | awk '{print $2}' | sed 's/Gi//g')
 availablespace=$(free | tail -n +2 | head -1 | awk '{print $7}' | sed 's/Gi//g')
 perc=$((100*availablespace/totalspace))
-echo "Total Memory used is : $perc%"
 if [ $perc -gt 80 ];then
-	echo "Warning Memory usage exceeds 80%"
+	disk="[Not OK]"
+else
+	disk="[Ok]"
 fi
-echo "===================================================================="
+
 #=====================Disk Health(On root)==========
 
 used=$(df -h / | awk '{print$5}' | tail -1 | sed 's/%//g')
-echo "Diske usage of root is $used%"
+#echo "Diske usage of root is $used%"
 if [ $used -gt 80 ];then
-	echo "Warning Disk usage of root is more than 80%"
+	#echo "Warning Disk usage of root is more than 80%"
+	root="[Not Ok]"
+else
+	root="[Ok]"
 fi
+
 echo "===================================================================="
+echo "		       Linux Server Health Report			  "
+echo "===================================================================="
+echo "Timestamp	:$(date)"
+echo "CPU Load (1m)	:$load $cpu"
+echo "Memory Usage	:$perc% $disk"
+echo "Root Disk Usage	:$used% $root"
+if [ "$cpu" = "[Ok]" ]  && [ "$disk" = "[Ok]" ] && [ "$root" = "[Ok]" ];then
+	status="Healthy"
+else
+	status="Unhealthy"
+fi
+echo "Overall status	:$status"
+echo "===================================================================="
+
